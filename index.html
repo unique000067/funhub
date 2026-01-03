@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FunHub</title>
+
+<style>
+/* ================= RESET ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* ================= BODY ================= */
+body{
+  background:#0b0b0b;
+  color:#fff;
+  font-family:system-ui, Arial, sans-serif;
+  overflow-x:hidden;
+}
+
+/* ================= HEADER ================= */
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:#111;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #222;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo img{
+  width:40px;
+  height:40px;
+  border-radius:10px;
+}
+
+.logo span{
+  font-size:20px;
+  font-weight:700;
+}
+
+.upload-btn{
+  font-size:26px;
+  cursor:pointer;
+}
+
+/* ================= TABS ================= */
+.tabs{
+  display:flex;
+  justify-content:space-around;
+  background:#111;
+  padding:10px 0;
+  border-bottom:1px solid #222;
+}
+
+.tab{
+  color:#aaa;
+  font-size:14px;
+}
+
+.tab.active{
+  color:#fff;
+  border-bottom:2px solid #ff0055;
+  padding-bottom:4px;
+}
+
+/* ================= FEED ================= */
+.feed{
+  max-width:430px;
+  margin:auto;
+  padding:10px;
+}
+
+/* ================= POST ================= */
+.post{
+  background:#161616;
+  border-radius:16px;
+  margin-bottom:25px;
+  overflow:hidden;
+  box-shadow:0 0 25px rgba(0,0,0,0.6);
+}
+
+/* ================= POST HEADER ================= */
+.post-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+}
+
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#333;
+}
+
+.username{
+  font-size:14px;
+  font-weight:600;
+}
+
+/* ================= MEDIA ================= */
+.post img,
+.post video{
+  width:100%;
+  max-height:520px;
+  object-fit:cover;
+  display:block;
+}
+
+/* ================= CAPTION ================= */
+.caption{
+  padding:10px;
+  font-size:14px;
+  color:#ccc;
+  line-height:1.4;
+}
+
+/* ================= REACTIONS ================= */
+.reactions{
+  display:flex;
+  justify-content:space-around;
+  padding:12px 0;
+  border-top:1px solid #222;
+}
+
+.react{
+  text-align:center;
+  cursor:pointer;
+}
+
+.react span{
+  font-size:22px;
+  display:block;
+}
+
+.react small{
+  font-size:11px;
+  color:#aaa;
+}
+
+.react:active span{
+  transform:scale(1.5);
+}
+
+/* ================= COMMENT ================= */
+.comment-box{
+  border-top:1px solid #222;
+  padding:10px;
+}
+
+.comment-box input{
+  width:100%;
+  background:#111;
+  border:none;
+  padding:10px;
+  color:#fff;
+  border-radius:8px;
+  outline:none;
+}
+
+/* ================= FOOTER ================= */
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:12px;
+  color:#777;
+}
+
+/* ================= EMOJI RAIN ================= */
+.emoji-rain{
+  position:fixed;
+  top:-50px;
+  font-size:28px;
+  pointer-events:none;
+  animation:fall linear forwards;
+  z-index:9999;
+}
+
+@keyframes fall{
+  from{
+    transform:translateY(0) rotate(0deg);
+    opacity:1;
+  }
+  to{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+@media(min-width:600px){
+  body{
+    display:flex;
+    justify-content:center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="logo">
+    <img src="funhub.png">
+    <span>FUNHUB</span>
+  </div>
+
+  <label class="upload-btn">
+    ➕
+    <input type="file" id="upload" hidden accept="image/*,video/*">
+  </label>
+</header>
+
+<!-- ================= TABS ================= -->
+<div class="tabs">
+  <div class="tab active">New</div>
+  <div class="tab">Popular</div>
+  <div class="tab">Videos</div>
+</div>
+
+<!-- ================= FEED ================= -->
+<div class="feed" id="feed">
+
+  <!-- ================= POST ================= -->
+  <div class="post">
+    <div class="post-header">
+      <div class="avatar"></div>
+      <div class="username">fun_user</div>
+    </div>
+
+    <img src="https://picsum.photos/400/520" ondblclick="doubleLike()">
+
+    <div class="caption">
+      🔥 Tap reactions — fast tap = heavy emoji rain 🌧️
+    </div>
+
+    <div class="reactions">
+      <div class="react" onclick="react('like','👍')"><span>👍</span><small id="like">0</small></div>
+      <div class="react" onclick="react('love','❤️')"><span>❤️</span><small id="love">0</small></div>
+      <div class="react" onclick="react('haha','😂')"><span>😂</span><small id="haha">0</small></div>
+      <div class="react" onclick="react('angry','😡')"><span>😡</span><small id="angry">0</small></div>
+      <div class="react" onclick="react('kiss','😘')"><span>😘</span><small id="kiss">0</small></div>
+      <div class="react" onclick="react('hug','🤗')"><span>🤗</span><small id="hug">0</small></div>
+      <div class="react" onclick="react('damn','😲')"><span>😲</span><small id="damn">0</small></div>
+    </div>
+
+    <div class="comment-box">
+      <input placeholder="Write a comment...">
+    </div>
+  </div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  © FunHub | Developer: <b>Mohit Donawat</b>
+</footer>
+
+<!-- ================= AUDIO ================= -->
+<audio id="likeS" src="like.mp3"></audio>
+<audio id="loveS" src="love.mp3"></audio>
+<audio id="hahaS" src="haha.mp3"></audio>
+<audio id="angryS" src="angry.mp3"></audio>
+<audio id="kissS" src="kiss.mp3"></audio>
+<audio id="hugS" src="hug.mp3"></audio>
+<audio id="damnS" src="damn.mp3"></audio>
+
+<script>
+/* ================= REACTION ================= */
+function react(type, emoji){
+  let count = document.getElementById(type);
+  count.innerText = parseInt(count.innerText) + 1;
+
+  let sound = document.getElementById(type + "S");
+  sound.currentTime = 0;
+  sound.play();
+
+  emojiRain(emoji);
+}
+
+/* ================= EMOJI RAIN ================= */
+function emojiRain(emoji){
+  let total = Math.floor(Math.random()*15) + 15; // speed based feel
+
+  for(let i=0;i<total;i++){
+    let e = document.createElement("div");
+    e.className = "emoji-rain";
+    e.innerText = emoji;
+    e.style.left = Math.random()*100 + "vw";
+    e.style.animationDuration = (Math.random()*1.5 + 1) + "s";
+
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),2000);
+  }
+}
+
+/* ================= DOUBLE TAP LOVE ================= */
+function doubleLike(){
+  react('love','❤️');
+}
+
+/* ================= UPLOAD PREVIEW ================= */
+document.getElementById("upload").addEventListener("change",function(e){
+  let file = e.target.files[0];
+  if(!file) return;
+
+  let url = URL.createObjectURL(file);
+  let feed = document.getElementById("feed");
+
+  let post = document.createElement("div");
+  post.className = "post";
+
+  post.innerHTML = `
+    <div class="post-header">
+      <div class="avatar"></div>
+      <div class="username">you</div>
+    </div>
+    ${file.type.startsWith("video")
+      ? `<video src="${url}" controls></video>`
+      : `<img src="${url}" ondblclick="doubleLike()">`
+    }
+    <div class="caption">New upload</div>
+  `;
+
+  feed.prepend(post);
+});
+</script>
+
+</body>
+</html>
